@@ -37,12 +37,18 @@ function setupClickHandlers() {
 			const { target } = event;
 
 			// Race track form field
-			if (target.matches(".card.track")) {
+			if (
+				target.matches(".card.track") ||
+				target.parentElement.matches(".card.track")
+			) {
 				handleSelectTrack(target);
 			}
 
 			// Podracer form field
-			if (target.matches(".card.podracer")) {
+			if (
+				target.matches(".card.podracer") ||
+				target.parentElement.matches(".card.podracer")
+			) {
 				handleSelectPodRacer(target);
 			}
 
@@ -131,7 +137,9 @@ async function runCountdown() {
 }
 
 function handleSelectPodRacer(target) {
-	console.log("selected a pod", target.id);
+	if (!target.classList.contains('podracer')) {
+		target = target.parentElement;
+	}
 
 	// remove class selected from all racer options
 	const selected = document.querySelector("#racers .selected");
@@ -142,11 +150,13 @@ function handleSelectPodRacer(target) {
 	// add class selected to current target
 	target.classList.add("selected");
 
-	// TODO - save the selected racer to the store
+	store.player_id = parseInt(target.id);
 }
 
 function handleSelectTrack(target) {
-	console.log("selected a track", target.id);
+	if (!target.classList.contains("track")) {
+		target = target.parentElement;
+	}
 
 	// remove class selected from all track options
 	const selected = document.querySelector("#tracks .selected");
@@ -157,7 +167,7 @@ function handleSelectTrack(target) {
 	// add class selected to current target
 	target.classList.add("selected");
 
-	// TODO - save the selected track id to the store
+	store.track_id = parseInt(target.id);
 }
 
 function handleAccelerate() {
