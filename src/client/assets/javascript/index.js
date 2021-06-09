@@ -134,13 +134,15 @@ async function runCountdown() {
 		let timer = 3;
 
 		return new Promise((resolve) => {
-			// TODO - use Javascript's built in setInterval method to count down once per second
-
-			// run this DOM manipulation to decrement the countdown for the user
-			document.getElementById("big-numbers").innerHTML = --timer;
-
-			// TODO - if the countdown is done, clear the interval, resolve the promise, and return
-		});
+			const countdown = setInterval(() => {
+				if (timer !== 0) {
+					document.getElementById("big-numbers").innerHTML = --timer;
+				} else {
+					clearInterval(countdown);
+					resolve();
+				}
+			});
+		}, 1000);
 	} catch (error) {
 		console.log(error);
 	}
@@ -183,6 +185,9 @@ function handleSelectTrack(target) {
 function handleAccelerate() {
 	console.log("accelerate button clicked");
 	// TODO - Invoke the API call to accelerate
+	accelerate(store.race_id)
+		.then(() => console.log("accelerate button clicked"))
+		.catch((error) => console.log(error.message));
 }
 
 // HTML VIEWS ------------------------------------------------
@@ -332,7 +337,6 @@ function defaultFetchOpts() {
 	};
 }
 
-// TODO - Make a fetch call (with error handling!) to each of the following API endpoints
 
 function getTracks() {
 	return fetch(`${SERVER}/api/tracks`)
