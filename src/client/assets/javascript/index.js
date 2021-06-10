@@ -134,15 +134,15 @@ async function runCountdown() {
 		let timer = 3;
 
 		return new Promise((resolve) => {
-			const countdown = setInterval(() => {
-				if (timer !== 0) {
-					document.getElementById("big-numbers").innerHTML = --timer;
-				} else {
-					clearInterval(countdown);
+			let countDown = setInterval(() => {
+				timer--;
+				document.getElementById("big-numbers").innerHTML = timer;
+				if (!timer) {
+					clearInterval(countDown);
 					resolve();
 				}
-			});
-		}, 1000);
+			}, 1000);
+		});
 	} catch (error) {
 		console.log(error);
 	}
