@@ -89,13 +89,11 @@ async function handleCreateRace() {
 		return;
 	}
 
-	
 	try {
 		const race = await createRace(player_id, track_id);
 		console.log(race);
 		renderAt("#race", renderRaceStartView(race.Track, race.Cars));
 		store.race_id = race.ID;
-
 	} catch (error) {
 		renderAt("#error", `<h2 class="error">${error.message}</h2>`);
 		console.log(error);
@@ -111,19 +109,23 @@ async function handleCreateRace() {
 
 function runRace(raceID) {
 	return new Promise((resolve) => {
-        const raceInterval = setInterval(async () => {
-            let res = await getRace(raceID);
-           
-            if (res.status === 'in-progress') {
-                renderAt('#leaderBoard', raceProgress(res.positions));
-            }
-            if (res.status === 'finished') {
-                clearInterval(raceInterval); // to stop the interval from repeating
-                renderAt('#race', resultsView(res.positions)); // to render the results view
-                resolve(res); // resolve the promise
-            }
-        }, 500);
-    });
+		const raceInterval = setInterval(async () => {
+			try {
+				let res = await getRace(raceID);
+				console.log(res)
+				if (res.status === "in-progress") {
+					renderAt("#leaderBoard", raceProgress(res.positions));
+				}
+				if (res.status === "finished") {
+					clearInterval(raceInterval);
+					renderAt("#race", resultsView(res.positions));
+					resolve(res);
+				}
+			} catch (err) {
+				console.log("Error with setInterval:: ", err);
+			}
+		}, 500);
+	});
 	// remember to add error handling for the Promise
 }
 
@@ -149,7 +151,7 @@ async function runCountdown() {
 }
 
 function handleSelectPodRacer(target) {
-	if (!target.classList.contains('podracer')) {
+	if (!target.classList.contains("podracer")) {
 		target = target.parentElement;
 	}
 
@@ -185,8 +187,7 @@ function handleSelectTrack(target) {
 function handleAccelerate() {
 	console.log("accelerate button clicked");
 	// TODO - Invoke the API call to accelerate
-	accelerate(store.race_id-1)
-		.catch((error) => console.log(error.message));
+	accelerate(store.race_id - 1).catch((error) => console.log(error.message));
 }
 
 // HTML VIEWS ------------------------------------------------
@@ -336,7 +337,6 @@ function defaultFetchOpts() {
 	};
 }
 
-
 function getTracks() {
 	return fetch(`${SERVER}/api/tracks`)
 		.then((res) => res.json())
@@ -377,8 +377,7 @@ function startRace(id) {
 	return fetch(`${SERVER}/api/races/${id}/start`, {
 		method: "POST",
 		...defaultFetchOpts(),
-	})
-		.catch((err) => console.log("Problem with startRace request::", err));
+	}).catch((err) => console.log("Problem with startRace request::", err));
 }
 
 function accelerate(id) {
