@@ -205,7 +205,7 @@ function renderRacerCard(racer) {
 			<h3>${driver_name}</h3>
 			<p>Top Speed: ${top_speed}</p>
 			<p>Acceleration: ${acceleration}</p>
-			<p>Handlinng: ${handling}</p>
+			<p>Handling: ${handling}</p>
 		</li>
 	`;
 }
@@ -282,15 +282,15 @@ function raceProgress(positions) {
 	userPlayer.driver_name += " (you)";
 
 	positions = positions.sort((a, b) => (a.segment > b.segment ? -1 : 1));
-	let count = 1;
+	let count = 0;
 
 	const results = positions.map((p) => {
+		count++;
 		return `
-			<tr>
-				<td>
-					<h3>${count++} - ${p.driver_name}</h3>
-				</td>
-			</tr>
+			<div class="place${count}">
+				<h3>${p.driver_name}</h3>
+				<h2>${count}</h2>
+			</div>
 		`;
 	}).join("");
 

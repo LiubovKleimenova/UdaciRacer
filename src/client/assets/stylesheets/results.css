@@ -17,3 +17,55 @@
 
 @media (min-width: 1824px) {
 }
+
+#leaderBoard {
+  display: flex;
+  align-items: flex-end;
+}
+
+#leaderBoard div {
+  position: relative;
+  width: 8vw;
+  margin-right: 1vw;
+  margin-left: 1vw;
+}
+
+#leaderBoard div h3 {
+  position: absolute;
+  top: -50px;
+}
+
+#leaderBoard div h2 {
+  text-align: center;
+  width: 100%;
+}
+
+.place1 {
+  order: 3;
+  height: 130px;
+  background-color: gold;
+}
+
+.place2 {
+  order: 2;
+  height: 100px;
+  background-color: silver;
+}
+
+.place3 {
+  order: 4;
+  height: 70px;
+  background-color: #b08d57;
+}
+
+.place4 {
+  order: 1;
+  height: 20px;
+  background-color: black;
+}
+
+.place5 {
+  order: 5;
+  height: 20px;
+  background-color: black;
+}
